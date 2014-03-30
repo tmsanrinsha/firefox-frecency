@@ -1,10 +1,10 @@
 <?php
 
 define('NUMVISITS', 10);
-define('FIRST_BUCKET_CUTOFF',   4 * 24 * 60 * 60 * 1000);
-define('SECOND_BUCKET_CUTOFF', 14 * 24 * 60 * 60 * 1000);
-define('THIRD_BUCKET_CUTOFF',  31 * 24 * 60 * 60 * 1000);
-define('FOURTH_BUCKET_CUTOFF', 90 * 24 * 60 * 60 * 1000);
+define('FIRST_BUCKET_CUTOFF',   4 * 24 * 60 * 60 * 1000000);
+define('SECOND_BUCKET_CUTOFF', 14 * 24 * 60 * 60 * 1000000);
+define('THIRD_BUCKET_CUTOFF',  31 * 24 * 60 * 60 * 1000000);
+define('FOURTH_BUCKET_CUTOFF', 90 * 24 * 60 * 60 * 1000000);
 
 $bucketWeight = array(
     100,70, 50, 30, 10
@@ -19,9 +19,9 @@ $visitTypeBonus = array(
     6 => 0,    // tempRedirectVisitBonus
     7 => 0     // downloadVisitBonus
 );
+// framedLinkVisitBonus
 // unvisitedTypedBonus
 // unvisitedBoookmarkBonus
-// framedLinkVisitBonus
 // defaultVisitBonus
 
 $db = new SQLite3(array_shift(glob('/Users/*/Library/Application Support/Firefox/Profiles/*/places.sqlite')));
