@@ -26,8 +26,7 @@ $visitTypeBonus = array(
 
 $db = new SQLite3(array_shift(glob('/Users/*/Library/Application Support/Firefox/Profiles/*/places.sqlite')));
 
-$resultPlaces = $db->query("SELECT id, frecency FROM moz_places LIMIT 100");
-// foreach (array(6180, 6192, 4943, 2034, 15148, 4598, 23858, 6153, 6155, 818, 574, 5405, 924, 25308) as $id) {
+$resultPlaces = $db->query("SELECT id, frecency FROM moz_places ORDER BY frecency DESC LIMIT 100");
 while ($rowPlaces = $resultPlaces->fetchArray()) {
     $id = $rowPlaces['id'];
     $result = $db->query(
@@ -37,10 +36,8 @@ while ($rowPlaces = $resultPlaces->fetchArray()) {
         "LIMIT " . NUMVISITS
     );
     $point[$id] = 0;
-    $now = time() * 1000;
-    echo "id: $id" . PHP_EOL;
+    $now = time() * 1000 * 1000;
     while ($row = $result->fetchArray()) {
-        echo 'visit_type' . $row['visit_type'] . PHP_EOL;
         if ($row['visit_date'] > $now - FIRST_BUCKET_CUTOFF) {
             $point[$id] += $visitTypeBonus[$row['visit_type']] / 100 * $bucketWeight[0];
         } elseif ($row['visit_date'] > $now - SECOND_BUCKET_CUTOFF) {
@@ -59,7 +56,7 @@ while ($rowPlaces = $resultPlaces->fetchArray()) {
         "WHERE place_id   = " . $id
     );
     $row = $result->fetchArray();
-    echo "point $point[$id]" . PHP_EOL;
+    echo "point {$point[$id]}" . PHP_EOL;
     echo "count " . $row['count'] . PHP_EOL;
     echo "calced frecency " . $point[$id] * $row['count'] / 10 . PHP_EOL;
     echo "frecency " . $rowPlaces['frecency'] . PHP_EOL;
